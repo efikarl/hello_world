@@ -1,2 +1,5 @@
+app
+*.o
 a.out
 *.log
+*.txt
