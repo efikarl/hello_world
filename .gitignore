@@ -3,3 +3,4 @@ app
 a.out
 *.log
 *.txt
+build
