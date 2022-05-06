@@ -8,16 +8,24 @@
     THE PROGRAM IS DISTRIBUTED UNDER THE MIT LICENSE ON AN "AS IS" BASIS,
     WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ---------------------------------------------------------------------------------
-    简单性能测试
+    基础定义
 ---------------------------------------------------------------------------------
 --*/
-#include "benchmark.h"
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
-typedef void (* lsz_benchmark_function_t) (void);
+#include "base.h"
 
-double lsz_benchmark(lsz_benchmark_function_t fn)
+void lsz_swap(void *a, void *b, size_t unit)
 {
-    lsz_benchmark_do;
-        fn();
-    lsz_benchmark_done;
+    void *t = calloc(1, unit);
+
+    memmove(t, a, unit);
+    memmove(a, b, unit);
+    memmove(b, t, unit);
+
+    free(t);
 }

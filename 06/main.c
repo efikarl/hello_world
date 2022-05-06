@@ -39,7 +39,7 @@ typedef struct {
 
 solution_t  g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     int   cnt;
     char *p, *end;
@@ -56,7 +56,7 @@ int ip_parse(char *input)
     while(end[0] != '\n') end++;
     g_slt.length  = (int) (end - g_slt.search) > MAX_S ? MAX_S : (int) (end - g_slt.search);
     end++; // '\n'
-    // 注：此时必须使用*alloc分配空间
+    // 注：此时必须使用*alloc分配空间去记录每行位置, 因为每行最大为M，不一定为M，使用数组的指针会有问题
     g_slt.data = calloc(g_slt.n, sizeof(char*));
     for (int i = 0; i < g_slt.n; i++) {
         g_slt.data[i] = end;
@@ -82,7 +82,7 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    ip_parse(input);
+    in_parse(input);
 
     int i, j, k, t, found;
     for (i = 0; i < g_slt.n; i++) {

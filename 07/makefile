@@ -1,32 +1,33 @@
 .PHONY: run clean
 
-# source object target
-SRC := $(wildcard      ./*.c)
-LIB := $(wildcard ../lib/*.c)
-OBJ := $(SRC:.c=.o) $(LIB:.c=.o)
+# 程序定义
 APP := a.out
+
+# 源与目标
+SRC := $(wildcard *.c)
+OBJ := $(SRC:.c=.o) $(LIB:.c=.o)
 
 # 编译参数
 CC      := gcc
-CFLAGS  :=
 DEFINES :=
-LDFLAGS := -L../lib
-LIB_INC := -I../lib
-HDR_INC := -I../lib
-
-# 链接
-$(APP):$(OBJ)
-	@ $(CC) $(LIB_INC) -o $@ $^
-
-# 编译
-%.o : %.c
-	@ $(CC) $(HDR_INC) -o $@ $(CFLAGS) $(DEFINES) -c $^
+CFLAGS  :=
+LDFLAGS := -llszlib
+HDR_INC :=
+LIB_INC :=
 
 # 运行
 run : $(APP)
-	@ ./$(APP)
+	./$(APP)
+
+# 链接
+$(APP):$(OBJ)
+	@$(CC) $(LIB_INC) $(CFLAGS) -o $@ $^  $(LDFLAGS)
+
+# 编译
+%.o : %.c
+	@$(CC) $(HDR_INC) $(CFLAGS) $(DEFINES) -o $@ -c $^
 
 # 清理
 clean:
-	@ $(RM) -f $(OBJ)
-	@ $(RM) -f $(APP)
+	@$(RM) -f $(OBJ)
+	@$(RM) -f $(APP)

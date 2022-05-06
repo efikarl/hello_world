@@ -21,76 +21,13 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "list.h" // this line introduce macro LSZ_LIST
-#include "benchmark.h"
+#include "lszlib.h"
 
 #ifndef APP_DEBUG
 #define APP_DEBUG 0
 #endif
 
 #define MAX_PEOPLE 1000
-
-#ifndef LSZ_LIST
-
-typedef struct {
-    int         num;
-    bool        out;
-} people_t;
-
-typedef struct {
-    people_t    who[MAX_PEOPLE];
-    int         out;
-    int         cnt;
-    int         last_person;
-} solution_t;
-
-solution_t      g_slt;
-
-void count(int n) {
-    if (n - g_slt.out <= 1) {
-        return;
-    }
-    for (int i = 0; i < n; i++) {
-        if (g_slt.who[i].out) {
-            continue;
-        }
-        g_slt.cnt = g_slt.cnt % 3 + 1;
-        if (g_slt.cnt == 3) {
-            g_slt.who[i].out = true;
-            g_slt.out++;
-        }
-#if APP_DEBUG
-        printf("who: num=%-3d, out=%d; out = %-3d, cnt=%d\n", g_slt.who[i].num, g_slt.who[i].out, g_slt.out, g_slt.cnt);
-#endif
-    }
-    count(n);
-}
-
-int solution(int n)
-{
-    if (n <= 0 || n >= MAX_PEOPLE) {
-        return -1;
-    } else {
-        memset(&g_slt, 0, sizeof(g_slt));
-    }
-
-    for (int i = 0; i < n; i++) {
-        g_slt.who[i].num = i+1;
-    }
-
-    count(n);
-
-    for (int i = 0; i < n; i++) {
-        if (!g_slt.who[i].out) {
-            g_slt.last_person = g_slt.who[i].num;
-            break;
-        }
-    }
-
-    printf("%d\n", g_slt.last_person);
-}
-
-#else   // #ifndef LSZ_LIST
 
 typedef struct {
     lsz_list_t  link;
@@ -100,9 +37,6 @@ typedef struct {
 typedef struct {
     lsz_list_t  list;
     int         cnt;
-#if APP_DEBUG
-    int         out;
-#endif
     int         last_person;
 } solution_t;
 
@@ -127,12 +61,8 @@ void count(lsz_list_t *list)
             g_slt.last_person = people->num;
         }
         g_slt.cnt = g_slt.cnt % 3 + 1;
-#if APP_DEBUG
-            printf("who: num=%-3d, out = %-3d, cnt=%d\n", people->num, g_slt.out, g_slt.cnt);
-#endif
         if (g_slt.cnt == 3) {
 #if APP_DEBUG
-            g_slt.out++;
             printf("who: num=%-3d, this person is out\n", people->num);
 #endif
             list_delete_link(this);
@@ -176,11 +106,9 @@ int solution(int n)
     printf("%d\n", g_slt.last_person);
 }
 
-#endif  // #ifndef LSZ_LIST
-
 int main(int argc, char const *argv[])
 {
-    lsz_benchmark_do;
+    // lsz_benchmark_do;
 
     printf("--------\n");
     solution(1);
@@ -196,7 +124,7 @@ int main(int argc, char const *argv[])
     solution(999);
     printf("--------\n");
 
-    lsz_benchmark_done;
+    // lsz_benchmark_done;
 
 /* 性能对比
 

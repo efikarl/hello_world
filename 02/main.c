@@ -28,10 +28,8 @@
 #endif
 
 typedef struct {
+    char    *s;
     int     n;      // 字串长度
-    int     r;      // 子串合规?
-    int     depth;  // 递归深度: sub_s_split
-    int     rc;     // 结果计数
     int     sc;     // 子串计数
 } solution_t;
 
@@ -52,53 +50,30 @@ int is_in_rule(int v)
     }
 }
 
-int sub_s_sum(char *s, int n)
+int sub_s_sumck(char *s, int n)
 {
     int sum = 0;
 
-    for (size_t i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         sum += s[i];
+        if (is_in_rule(sum)) {
+#if APP_DEBUG
+            printf("%.*s\n", i+1, s);
+#endif
+            g_slt.sc++;
+        }
     }
 
     return sum;
 }
 
-int sub_s_split(char *s, int n, bool init)
+void sub_s_split(int next)
 {
-    if (init) {
-        memset(&g_slt, 0, sizeof(g_slt));
-    }
-    g_slt.depth++;
-    if (n > 0) {
-        g_slt.r = is_in_rule(sub_s_sum(s, n));
-        if (g_slt.r) {
-            g_slt.sc++;
-            g_slt.rc++;
-        }
-#if APP_DEBUG
-        printf("****.****(%c) : %.*s\n", g_slt.r?'+':'-', n, s);
-#endif
-    }
-
-    for (int i = 1; i < n; i++) {
-        g_slt.r = is_in_rule(sub_s_sum(s, i));
-#if APP_DEBUG
-        printf("%04d.%04d(%c) : %.*s\n", n, i, g_slt.r?'+':'-', i, s);
-#endif
-        if (g_slt.r) {
-            g_slt.sc = g_slt.depth;
-            sub_s_split(&s[i], n-i, false);
-        }
-    }
-
-    g_slt.depth--;
-    switch (g_slt.rc) {
-    case 0:
-        return g_slt.rc;
-    case 1:
-        return g_slt.sc;
-    default:
-        return -1;
+    if (next >= g_slt.n) {
+        return;
+    } else {
+        sub_s_sumck(&g_slt.s[next], g_slt.n - next);
+        sub_s_split(next + 1);
     }
 }
 
@@ -110,12 +85,22 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    while (input[g_slt.n] != '\0')  g_slt.n++;
+    g_slt.n = strlen(input);
+    g_slt.s = input;
 
-    return sub_s_split(input, g_slt.n, true);
+    // code
+    sub_s_split(0);
+
+    switch (g_slt.sc) {
+    case 0:
+    case 1:
+        return g_slt.sc;
+    default:
+        return -1;
+    }
 }
 
 int main(int argc, char const *argv[])
 {
-    printf("s = ABCDE$018W#EFI$: %d\n", solution("ABCDE$018ABCDE$"));
+    printf("%d\n", solution("ABCDE$018ABCDE$"));
 }

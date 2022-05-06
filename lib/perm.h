@@ -8,18 +8,14 @@
     THE PROGRAM IS DISTRIBUTED UNDER THE MIT LICENSE ON AN "AS IS" BASIS,
     WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ---------------------------------------------------------------------------------
-    排列
----------------------------------------------------------------------------------
-    [i] 待排数组
-    [o] 完全排列
+    算法 - 排列(permutation)
 ---------------------------------------------------------------------------------
 --*/
 #ifndef LSZ_PERM
 #define LSZ_PERM
 
-typedef int (*perm_callback_t)(int *sub, int m);
+typedef void (*perm_callback_t)(int *vec, int n);
 
-void init(int *vec, int n, perm_callback_t fn);
-void perm(int next);
+void lsz_perm(void *vec, size_t unit, int n, perm_callback_t fn);
 
 #endif

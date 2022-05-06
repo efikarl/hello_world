@@ -61,7 +61,7 @@ int pcmp(const void *p1, const void *p2)
     }
 }
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     char *p, *end;
 
@@ -161,7 +161,7 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    ip_parse(input);
+    in_parse(input);
 
     // code
     square_points(0);

@@ -8,18 +8,14 @@
     THE PROGRAM IS DISTRIBUTED UNDER THE MIT LICENSE ON AN "AS IS" BASIS,
     WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ---------------------------------------------------------------------------------
-    组合
----------------------------------------------------------------------------------
-    [i] 待组数组
-    [o] 部分组合
+    算法 - 组合(combination)
 ---------------------------------------------------------------------------------
 --*/
 #ifndef LSZ_COMB
 #define LSZ_COMB
 
-typedef int (*comb_callback_t)(int *sub, int m);
+typedef void (*comb_callback_t)(int *sub, int m);
 
-void init(int *set, int n, int *sub, int m, comb_callback_t fn);
-void comb(int next);
+void lsz_comb(void *set, size_t unit, int n, int m, comb_callback_t fn);
 
 #endif

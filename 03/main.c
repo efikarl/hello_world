@@ -66,44 +66,6 @@ int min(int a, int b)
     }
 }
 
-#if !_STDLIB_H
-void swap(int *a, int *b)
-{
-    if (*a == *b) {
-        return;
-    }
-    *a = *a ^ *b;
-    *b = *a ^ *b;
-    *a = *a ^ *b;
-}
-
-void r_qsort(int *nums, int l, int r)
-{
-    int i = l, j = r -1;
-
-    if (l >= r) {
-        return;
-    }
-    // let pivot = nums[r], p = i
-    // partition: find where pivot should be(p)
-    while (1)
-    {
-        while ((nums[i] <  nums[r])) i++;
-        while ((nums[j] >= nums[r]) && (j >= 0)) j--;
-        if (i < j) {
-            swap(&nums[i], &nums[j]);
-        } else {
-            break;
-        }
-    }
-    if (i != r) {
-        swap(&nums[i], &nums[r]);
-    }
-
-    r_qsort(nums, l, i - 1);
-    r_qsort(nums, i + 1, r);
-}
-#else
 int icmp(const void *a, const void *b)
 {
     return *(int *)a - *(int *)b;
@@ -113,7 +75,6 @@ void r_qsort(int *nums, int l, int r)
 {
     qsort(nums, r - l + 1, sizeof(int), icmp);
 }
-#endif
 
 //
 // [1] 交集生成

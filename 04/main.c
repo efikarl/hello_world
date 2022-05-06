@@ -35,20 +35,20 @@
 #define MAX_INE   1000
 
 typedef struct {
-    double  a[MAX_INE][MAX_VAR];    // 系数
-    int     v[MAX_VAR];             // 变量
-    int     c[MAX_INE];             // 约束: 1: > 2: >= -1: < -2 <=
-    double  t[MAX_INE];             // 目标
+    double (*a)[MAX_VAR];           // 系数
+    int     *v;                     // 变量
+    int     *c;                     // 约束: 1: > 2: >= -1: < -2 <=
+    double  *t;                     // 目标
     int     var_cnt;
     int     exp_cnt;
-    double  l_value[MAX_INE];       // 左值
-    bool    truth[MAX_INE];         // 真值
-    double  d_value[MAX_INE];       // 差值
+    double  *l_value;               // 左值
+    double  *d_value;               // 差值
+    bool    *truth;                 // 真值
 } solution_t;
 
 solution_t  g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     char    *p, *end;
     double  v;
@@ -69,6 +69,16 @@ int ip_parse(char *input)
         }
     }
     g_slt.var_cnt++;
+    //
+    // 空间优化，按需动态分配内存
+    //
+    g_slt.a         = calloc(g_slt.exp_cnt*g_slt.var_cnt, sizeof(double));
+    g_slt.v         = calloc(g_slt.var_cnt, sizeof(int));
+    g_slt.c         = calloc(g_slt.exp_cnt, sizeof(int));
+    g_slt.t         = calloc(g_slt.exp_cnt, sizeof(double));
+    g_slt.l_value   = calloc(g_slt.exp_cnt, sizeof(double));
+    g_slt.d_value   = calloc(g_slt.exp_cnt, sizeof(double));
+    g_slt.truth     = calloc(g_slt.exp_cnt, sizeof(bool));
 
     end = input, i = 0, j = 0;
     do {
@@ -143,7 +153,7 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    ip_parse(input);
+    in_parse(input);
 
     for (int i = 0; i < g_slt.exp_cnt; i++) {
         g_slt.l_value[i] = 0;
@@ -200,7 +210,7 @@ int solution(char *input)
             p = " <= ";
             break;
         default:
-            p = "    "; 
+            p = "    ";
             break;
         }
         printf("%s%9.4f    ", p, g_slt.t[i]);
@@ -225,6 +235,14 @@ int solution(char *input)
     double  max_ipart;
     double  max_fpart = modf(max, &max_ipart);
     printf("%s %.0f\n", truth?"true":"false", max_ipart);
+
+    free(g_slt.a);
+    free(g_slt.v);
+    free(g_slt.c);
+    free(g_slt.t);
+    free(g_slt.l_value);
+    free(g_slt.d_value);
+    free(g_slt.truth);
 }
 
 int main(int argc, char const *argv[])

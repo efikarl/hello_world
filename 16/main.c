@@ -36,7 +36,7 @@ typedef struct {
 
 solution_t          g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     char *p, *end, i = 0;
 
@@ -102,7 +102,7 @@ int solution(char *input)
     }
     g_slt.best = __INT_MAX__;
 
-    ip_parse(input);
+    in_parse(input);
 
     // code
     group(0);

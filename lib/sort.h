@@ -8,16 +8,16 @@
     THE PROGRAM IS DISTRIBUTED UNDER THE MIT LICENSE ON AN "AS IS" BASIS,
     WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 ---------------------------------------------------------------------------------
-    简单性能测试
+    算法 - 快速排序
 ---------------------------------------------------------------------------------
 --*/
-#include "benchmark.h"
+#ifndef LSZ_SORT
+#define LSZ_SORT
 
-typedef void (* lsz_benchmark_function_t) (void);
+typedef int (* lsz_compare_t) (const void *a, const void *b);
+int lsz_icmp(const void *a, const void *b);
+int lsz_scmp(const void *a, const void *b);
 
-double lsz_benchmark(lsz_benchmark_function_t fn)
-{
-    lsz_benchmark_do;
-        fn();
-    lsz_benchmark_done;
-}
+void lsz_qsort(void *data, size_t unit, int n, lsz_compare_t cmpfn);
+
+#endif

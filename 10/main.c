@@ -140,7 +140,7 @@ bool go_next()
     }
 }
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     int   v, i, j;
     char *p, *end;
@@ -198,7 +198,7 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    ip_parse(input);
+    in_parse(input);
 
     end = input;
     while (end[0] != '\n') {

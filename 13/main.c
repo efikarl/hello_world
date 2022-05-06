@@ -25,7 +25,7 @@
 
 // #define NDEBUG
 #ifndef APP_DEBUG
-#define APP_DEBUG 1
+#define APP_DEBUG 0
 #endif
 
 #define MAX_TASK    1000
@@ -39,7 +39,7 @@ typedef struct {
 
 solution_t          g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     char *p, *end;
 
@@ -103,7 +103,7 @@ int solution(char *input)
     } else {
         memset(&g_slt, 0, sizeof(g_slt));
     }
-    ip_parse(input);
+    in_parse(input);
 
     dispatch();
 

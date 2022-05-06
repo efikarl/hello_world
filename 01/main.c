@@ -26,7 +26,7 @@ typedef struct {
 
 solution_t  g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     int     i = 0;
     char    * end;
@@ -49,13 +49,13 @@ int solution(char *input)
 {
     int i, j, min, tmp, cnt;
 
-    cnt = ip_parse(input);
+    cnt = in_parse(input);
     if (cnt <= 0) {
         return -1;
     }
 
-    min = abs(g_slt.nums[0]);
-    for (i = 0; i < cnt; i++) {
+    min = 0;
+    for (i = 0; i < cnt - 1; i++) {
         for (j = i + 1; j < cnt; j++) {
             tmp = abs(g_slt.nums[i] + g_slt.nums[j]);
             if (!tmp) {

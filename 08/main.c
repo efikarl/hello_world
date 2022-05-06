@@ -24,7 +24,7 @@
 #include <stdbool.h>
 
 #ifndef APP_DEBUG
-#define APP_DEBUG 1
+#define APP_DEBUG 0
 #endif
 
 #define MAX_CHAIN_CARD  12
@@ -77,7 +77,7 @@ typedef struct {
 
 solution_t      g_slt;
 
-int ip_parse(char *input)
+int in_parse(char *input)
 {
     int i, j, l;
     char *p = input;
@@ -176,7 +176,7 @@ int solution(char *input)
         memset(&g_slt, 0, sizeof(g_slt));
     }
 
-    ip_parse(input);
+    in_parse(input);
 
     if (g_slt.desk_chain_lenth >= 5) {
         for (i = 0; i < MAX_CHAIN_CARD; i++) {
